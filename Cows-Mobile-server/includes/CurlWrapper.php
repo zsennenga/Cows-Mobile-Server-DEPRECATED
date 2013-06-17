@@ -41,7 +41,7 @@ class CurlWrapper	{
 		for ($i = 0; $i < 15; $i++) {
 			$randstring = $charset[rand(0, strlen($characters))];
 		}
-		return realpath(dirname(__FILE__)) + "cookies/cookieFile" + $randString;
+		return realpath(dirname(__FILE__)) . "cookies/cookieFile" . $randString;
 	}
 	
 	/**
@@ -55,9 +55,9 @@ class CurlWrapper	{
 	 */
 	public function performEventRegistration($event)	{
 		//Generate URLs used to perform curl requests. Namely: Login, register event, and logout.
-		$login = $baseUrl + CurlWrapper::LOGIN_PATH + "?" + $event->getTicketString();
-		$execute = $baseUrl + CurlWrapper::EVENT_PATH + "?";
-		$logout = $baseUrl + CurlWrapper::LOGOUT_PATH;
+		$login = $baseUrl . CurlWrapper::LOGIN_PATH . "?" . $event->getTicketString();
+		$execute = $baseUrl . CurlWrapper::EVENT_PATH . "?";
+		$logout = $baseUrl . CurlWrapper::LOGOUT_PATH;
 		
 		if(!$this->executeCurlRequest($login))	{
 				$this->destroySession();
@@ -66,7 +66,7 @@ class CurlWrapper	{
 		
 		//Execute Event Request as POST
 		curl_setopt($this->curlHandle, CURLOPT_POST, true);
-		curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $event->getEventString() + $token);
+		curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $event->getEventString() . $token);
 		$token = $this->getRequestToken();
 		if ($token == "ERROR")	{
 			$this->destroySession();
@@ -129,7 +129,7 @@ class CurlWrapper	{
 		$div = $xp->query('//div[@class="validation-summary-errors"]');
 		if ($div->length > 0)	{
 			$div = $div->item(0);
-			$this->error = "COWS Error:" + htmlspecialchars_decode(strip_tags($div->nodeValue()));
+			$this->error = "COWS Error:" . htmlspecialchars_decode(strip_tags($div->nodeValue()));
 			return false;
 		}
 		
@@ -145,7 +145,7 @@ class CurlWrapper	{
 	 * 
 	 */
 	private function getRequestToken()	{
-		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl + CurlWrapper::EVENT_PATH);
+		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl . CurlWrapper::EVENT_PATH);
 		$out = curl_exec($this->curlHandle);
 		
 		if ($out === FALSE) {
@@ -166,7 +166,7 @@ class CurlWrapper	{
 		
 		$val = $node->getAttribute('value');
 		
-		return "__RequestVerificationToken=" + $val;
+		return "__RequestVerificationToken=" . $val;
 	}
 	
 	/**

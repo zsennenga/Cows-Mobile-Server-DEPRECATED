@@ -9,10 +9,7 @@ class Event	{
 	
 	function Event($getArray,$siteid)	{
 		$this->siteId = $siteid;
-		$this->ticketID = $getArray['ticket'];
-		unset($getArray['ticket']);
 		$this->getArray = $getArray;
-		$this->getString = http_build_query($getArray);
 		$this->errors = "";
 	}
 	
@@ -23,7 +20,7 @@ class Event	{
 	 * @return CAS ticket as a GET parameter
 	 */
 	public function getTicketString()	{
-		return "ticket=" + $this->ticketID;
+		return "ticket=" . $this->ticketID;
 	}
 	
 	/**
@@ -34,7 +31,7 @@ class Event	{
 	 */
 	public function getEventString()	{
 		$retString = $this->getArray;
-		$retString += "&SiteId=" + $this->siteId;
+		$retString .= "&SiteId=" . $this->siteId;
 		
 		return $retString;
 	}
@@ -43,13 +40,27 @@ class Event	{
 	 * 
 	 * checkParameters
 	 * 
-	 * Checks parameters for correctness.
+	 * Checks parameters for correctness and seperates out necessary ones.
 	 * 
 	 * @return Bool representing whether or not all parameters are valid.
 	 */
-	public function checkParameters()	{
-		//TODO: Verify ticket.
-		return true;
+	public function constructParameters()	{
+		
+		$noErrors = true;
+		
+		if (!isset($this->getArray['ticket']))	{
+			$this->errors .= "Ticket not set";
+			$noErrors = false;
+		}
+		else	{
+			$this->ticketID = $getArray['ticket'];
+			unset($getArray['ticket']);
+			//TODO: Verify ticket.
+		}
+		
+		$this->getString = http_build_query($this->getArray);
+		
+		return $noErrors;
 	}
 	
 	/**
