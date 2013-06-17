@@ -52,9 +52,7 @@ class CurlWrapper	{
 	 * @param Event $event
 	 * @return Bool representing "Did this finish successfully as far as cURL is concerned?".
 	 */
-	
 	public function performEventRegistration($event)	{
-		
 		//Generate URLs used to perform curl requests. Namely: Login, register event, and logout.
 		$login = $baseUrl + CurlWrapper::LOGIN_PATH + "?" + $event->getTicketString();
 		$execute = $baseUrl + CurlWrapper::EVENT_PATH + "?";
@@ -101,7 +99,6 @@ class CurlWrapper	{
 	 * @return Bool representing "Did this finish successfully?"
 	 */
 	private function executeCurlRequest($url)	{
-		
 		curl_setopt($this->curlHandle, CURLOPT_URL, $url);
 		$out = curl_exec($this->curlHandle);
 		
@@ -113,6 +110,7 @@ class CurlWrapper	{
 		return $this->errorScrape($out);
 		
 	}
+	
 	/**
 	 * 
 	 * errorScrape
@@ -171,6 +169,7 @@ class CurlWrapper	{
 	}
 	
 	/**
+	 * 
 	 * destroySession
 	 * 
 	 * Closes the class instances' curl handle, and unlinks the cookie jar.
