@@ -13,10 +13,10 @@ require_once 'includes/Event.php';
 
 /**
  * checkError
- * 
- * Quick wrapper to handle the construction of 
+ *
+ * Quick wrapper to handle the construction of
  * error messages if an error condition is met.
- * 
+ *
  * @param Boolean $bool
  * @param String $errorMessage
  */
@@ -37,4 +37,5 @@ $curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/");
 checkError($curlWrapper->performEventRegistration($event), 	$curlWrapper->getError());
 
 echo "0:0";
+
 ?>

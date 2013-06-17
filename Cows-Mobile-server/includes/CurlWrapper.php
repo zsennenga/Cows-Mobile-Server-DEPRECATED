@@ -1,9 +1,18 @@
 <?php
+/**
+ * CurlWrapper.php
+ * 
+ * Used to execute Curl Queries in a more ordered/abstracted way.
+ * 
+ * @author its-zach
+ *
+ */
 class CurlWrapper	{
 	private $baseUrl;
 	private $curlHandle;
 	private $error;
 	private $cookieFile;
+	
 	const LOGIN_PATH = "Account/LogOn";
 	const EVENT_PATH = "Event/Create";
 	const LOGOUT_PATH = "Account/LogOff";
@@ -25,7 +34,7 @@ class CurlWrapper	{
 	 * 
 	 * @return cookieFile name
 	 */
-	function genFilename()	{
+	private function genFilename()	{
 		$charset = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		$randString = '';
 		for ($i = 0; $i < 15; $i++) {
@@ -39,10 +48,9 @@ class CurlWrapper	{
 	 * performEventRegistration
 	 *
 	 * Performes the entire request, from login, to logout. 
-	 * 
-	 * Returns a bool representing "Did this finish successfully as far as cURL is concerned?".
 	 *
 	 * @param Event $event
+	 * @return Bool representing "Did this finish successfully as far as cURL is concerned?".
 	 */
 	
 	public function performEventRegistration($event)	{
@@ -52,30 +60,29 @@ class CurlWrapper	{
 		$execute = $baseUrl + CurlWrapper::EVENT_PATH + "?";
 		$logout = $baseUrl + CurlWrapper::LOGOUT_PATH;
 		
-		if(!$this->executeCurlRequest($login,false))	{
+		if(!$this->executeCurlRequest($login))	{
 				$this->destroySession();
 				return false;
 		}
 		
 		//Execute Event Request as POST
-		curl_setopt($this->curlHandle, CURLOPT_POST , true);
-		
+		curl_setopt($this->curlHandle, CURLOPT_POST, true);
+		curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $event->getEventString() + $token);
 		$token = $this->getRequestToken();
 		if ($token == "ERROR")	{
 			$this->destroySession();
 			return false;
 		}
-		curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $event->getEventString() + $token);
 		
-		if(!$this->executeCurlRequest($login,true))	{
+		if(!$this->executeCurlRequest($execute))	{
 			$this->destroySession();
 			return false;
 		}
 		
 		//Change everything back to GET and perform logout.
 		curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, "");
-		curl_setopt($this->curlHandle, CURLOPT_POST , false);
-		if(!$this->executeCurlRequest($logout,false))	{
+		curl_setopt($this->curlHandle, CURLOPT_POST, false);
+		if(!$this->executeCurlRequest($logout))	{
 			$this->destroySession();
 			return false;
 		}
@@ -90,13 +97,10 @@ class CurlWrapper	{
 	 * 
 	 * Executes a generic curl request
 	 * 
-	 * Returns a bool representing "Did this finish successfully?"
-	 * 
 	 * @param String $url
-	 * @param Bool $scrapeForErrors
+	 * @return Bool representing "Did this finish successfully?"
 	 */
-	
-	private function executeCurlRequest($url, $scrapeForErrors)	{
+	private function executeCurlRequest($url)	{
 		
 		curl_setopt($this->curlHandle, CURLOPT_URL, $url);
 		$out = curl_exec($this->curlHandle);
@@ -106,16 +110,30 @@ class CurlWrapper	{
 			return false;
 		}
 		
-		if ($scrapeForErrors) return $this->errorScrape($out);
+		return $this->errorScrape($out);
 		
-		else return true;
 	}
-	
+	/**
+	 * 
+	 * errorScrape
+	 * 
+	 * Scrapes a given body of html text for errors from COWS
+	 * 
+	 * @param $htmlOutput
+	 * @return Bool representing "Were there no COWS errors found?"
+	 */
 	private function errorScrape($htmlOutput)	{
 		$doc = new DOMDocument();
 		$doc->loadHTML($htmlOutput);
 		
-		//TODO actually scrape for errors
+		$xp = new DOMXPath($doc);
+		$div = $xp->query('//div[@class="validation-summary-errors"]');
+		if ($div->length > 0)	{
+			$div = $div->item(0);
+			$this->error = htmlspecialchars_decode(strip_tags($div->nodeValue()));
+			return false;
+		}
+		
 		return true;
 	}
 	
@@ -123,8 +141,8 @@ class CurlWrapper	{
 	 * 
 	 * getRequestToken
 	 * 
-	 * Returns a string representing a POST paramter containing the correct __RequestVerificationToken
-	 * from COWS
+	 * @return String containing POST paramter containing the correct __RequestVerificationToken
+	 * from COWS, or the string "ERROR" if there is an error.
 	 * 
 	 */
 	private function getRequestToken()	{
@@ -141,6 +159,10 @@ class CurlWrapper	{
 		$doc->loadHTML($out);
 		$xp = new DOMXPath($doc);
 		$nodes = $xp->query('//input[@name="__RequestVerificationToken"]');
+		if ($nodes->length == 0)	{
+			$this->error = "Unable to obtain __RequestVerificationToken";
+			return "ERROR";
+		}
 		$node = $nodes->item(0);
 		
 		$val = $node->getAttribute('value');
@@ -148,11 +170,25 @@ class CurlWrapper	{
 		return "__RequestVerificationToken=" + $val;
 	}
 	
+	/**
+	 * destroySession
+	 * 
+	 * Closes the class instances' curl handle, and unlinks the cookie jar.
+	 * 
+	 */
 	public function destroySession()	{
 		curl_close($this->curlHandle);
 		unlink($this->cookieFile);
 	}
 	
+	/**
+	 * 
+	 * getError
+	 * 
+	 * Getter for $this->error
+	 * 
+	 * @return Error text
+	 */
 	public function getError()	{
 		return $this->error;
 	}
