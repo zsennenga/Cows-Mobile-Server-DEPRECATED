@@ -29,10 +29,10 @@ function checkError($bool, $errorMessage)	{
 }
 
 //Create an event object and use it to verify all our ducks are in a row regarding the request parameters.
-$event = new Event($_GET);
+$event = new Event($_GET,"its");
 checkError($event->checkParameters(),$event->getErrors());
 
-$curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/","its");
+$curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/");
 
 //Login, do the event request, and Logout. If any errors happen along the way, stop and send a message to the user.
 checkError($curlWrapper->performEventRegistration($event), 	$curlWrapper->getError());
