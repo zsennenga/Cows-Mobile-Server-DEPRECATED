@@ -2,44 +2,41 @@
 /**
  * CowsMobileProxy.php
  * 
- * Proxy used as a go-between for the mobile app and cows.
+ * Proxy used as a go-between for the mobile app and COWS.
  * 
- * Takes ticket (as a CAS ticket ID) and a whole smattering of event configuration information as inputs.
+ * Takes ticket (as a CAS ticket ID) and a whole smattering of event 
+ * configuration information as inputs.
  * 
  */
 require_once 'includes/CurlWrapper.php';
+require_once 'includes/Event.php';
 
 /**
+ * checkError
+ * 
+ * Quick wrapper to handle the construction of 
+ * error messages if an error condition is met.
  * 
  * @param Boolean $bool
- * @param Status Code $return
+ * @param String $errorMessage
  */
-function checkError($bool, $return)	{
+function checkError($bool, $errorMessage)	{
 	if ($bool)	{
-		echo $return;
+		echo "-1:" + $return;
 		exit(0);
 	}
 }
 
-function checkEventParameters($getArray)	{
-	return false;
-}
+//Create an event object and use it to verify all our ducks are in a row regarding the request parameters.
+$event = new Event($_GET);
+checkError($event->checkParameters(),$event->getErrors());
 
-checkError(!isset($_GET['ticket']),"1");
-checkError(checkEventParameters($_GET),"2");
+$curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/");
 
-$curlWrapper = new curlWrapper("http://cows.ucdavis.edu/its/");
+//Login, do the event request, and Logout. If any errors happen along the way, stop and send a message to the user.
+checkError($curlWrapper->login(),			$curlWrapper->getError());
+checkError($curlWrapper->exectute($event), 	$curlWrapper->getError());
+checkError($curlWrapper->logout(),			$curlWrapper->getError());
 
-$curlWrapper->login($_GET['ticket']);
-checkError($curlWrapper->error,"3");
-
-$curlWrapper->setParameters($_GET);
-checkError($curlWrapper->error,"4");
-
-$curlWrapper->logout();
-checkError($curlWrapper->error,"5");
-
-echo "0";
-exit(0);
-
+echo "0:0";
 ?>
