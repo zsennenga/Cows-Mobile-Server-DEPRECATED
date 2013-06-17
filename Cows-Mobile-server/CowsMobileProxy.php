@@ -21,7 +21,7 @@ require_once 'includes/Event.php';
  * @param String $errorMessage
  */
 function checkError($bool, $errorMessage)	{
-	if ($bool)	{
+	if (!$bool)	{
 		echo "-1:" + $return;
 		exit(0);
 	}
@@ -34,9 +34,7 @@ checkError($event->checkParameters(),$event->getErrors());
 $curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/");
 
 //Login, do the event request, and Logout. If any errors happen along the way, stop and send a message to the user.
-checkError($curlWrapper->login(),			$curlWrapper->getError());
-checkError($curlWrapper->exectute($event), 	$curlWrapper->getError());
-checkError($curlWrapper->logout(),			$curlWrapper->getError());
+checkError($curlWrapper->performEventRegistration($event), 	$curlWrapper->getError());
 
 echo "0:0";
 ?>
