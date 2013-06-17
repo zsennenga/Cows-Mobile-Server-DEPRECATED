@@ -32,7 +32,7 @@ function checkError($bool, $errorMessage)	{
 $event = new Event($_GET);
 checkError($event->checkParameters(),$event->getErrors());
 
-$curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/");
+$curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/","its");
 
 //Login, do the event request, and Logout. If any errors happen along the way, stop and send a message to the user.
 checkError($curlWrapper->performEventRegistration($event), 	$curlWrapper->getError());
