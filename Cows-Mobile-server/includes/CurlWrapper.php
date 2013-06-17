@@ -21,6 +21,7 @@ class CurlWrapper	{
 		$this->baseUrl = $baseURL;
 		$this->curlHandle = curl_init();
 		$this->cookieFile = genFilename();
+		$this->error = "";
 		curl_setopt($this->curlHandle, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($this->curlHandle, CURLOPT_COOKIEJAR, $this->cookieFile);
 		curl_setopt($this->curlHandle, CURLOPT_COOKIEFILE, $this->cookieFile);
