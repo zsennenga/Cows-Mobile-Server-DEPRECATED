@@ -128,7 +128,7 @@ class CurlWrapper	{
 		$div = $xp->query('//div[@class="validation-summary-errors"]');
 		if ($div->length > 0)	{
 			$div = $div->item(0);
-			$this->error = htmlspecialchars_decode(strip_tags($div->nodeValue()));
+			$this->error = "COWS Error:" + htmlspecialchars_decode(strip_tags($div->nodeValue()));
 			return false;
 		}
 		
