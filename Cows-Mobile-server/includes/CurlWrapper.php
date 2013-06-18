@@ -144,6 +144,7 @@ class CurlWrapper	{
 			return false;
 		}
 		
+		//Quick and dirty parsing of the CAS response
 		if (strpos($out,"proxyFailure") === false)	{
 			$out = strip_tags($out);
 			$out = str_replace(' ', '', $out);
@@ -184,6 +185,7 @@ class CurlWrapper	{
 		}
 		
 		//Cows likes to throw generic errors sometimes for no reason
+		//Well okay there is usually a reason
 		if (strstr($htmlOutput,"Error") !== false)	{
 			$this->error = "COWS Error: Unknown Problem occurred.";
 			return false;
@@ -201,6 +203,7 @@ class CurlWrapper	{
 	 * 
 	 */
 	private function getRequestToken()	{
+		//Get event creation page
 		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl . CurlWrapper::EVENT_PATH);
 		
 		$out = curl_exec($this->curlHandle);
@@ -235,7 +238,12 @@ class CurlWrapper	{
 	 * 
 	 */
 	public function destroySession()	{
+		//Attempt to logout
+		curl_setopt($this->curlHandle, CURLOPT_HTTPGET, true);
+		curl_exec($this->curlHandle,$this->baseUrl . CurlWrapper::LOGOUT_PATH);
+		//Close cURL handle
 		curl_close($this->curlHandle);
+		//Destroy cookie file
 		unlink($this->cookieFile);
 	}
 	
