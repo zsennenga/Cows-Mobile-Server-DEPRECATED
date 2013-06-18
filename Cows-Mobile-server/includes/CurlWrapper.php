@@ -34,6 +34,14 @@ class CurlWrapper	{
 		return realpath(dirname(__FILE__)) . "/cookies/cookieFile" . $randString;
 	}
 	
+	/**
+	 * 
+	 * CurlWrapper
+	 * 
+	 * Constructor. Sets up curl handle, basic options, and a few other variables.
+	 * 
+	 * @param String $baseUrl
+	 */
 	function CurlWrapper($baseUrl)	{
 		$this->baseUrl = $baseUrl;
 		$this->curlHandle = curl_init();
@@ -134,8 +142,8 @@ class CurlWrapper	{
 	 * @return String $serviceTicket
 	 */
 	private function proxyToServiceTicket($proxyTicket)	{
-		$url = "https://cas.ucdavis.edu:8443/cas/proxy?service=http%3a%2f%2fcows.ucdavis.edu%2fits%2fAccount%2fLogOn%3freturnUrl%3dhttp%3a%2f%2fcows.ucdavis.edu%2fits%2f&pgt="
-				. $proxyTicket;
+		$url = "https://cas.ucdavis.edu:8443/cas/proxy?service=http%3a%2f%2fcows.ucdavis.edu%2fits%2fAccount%2fLogOn%3freturnUrl%3dhttp%3a%2f%2fcows.ucdavis.edu%2fits%2f
+				&pgt=" . $proxyTicket;
 		curl_setopt($this->curlHandle, CURLOPT_URL, $url);
 		$out = curl_exec($this->curlHandle);
 		
