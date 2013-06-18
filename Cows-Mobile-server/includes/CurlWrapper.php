@@ -258,5 +258,6 @@ class CurlWrapper	{
 	public function getError()	{
 		return $this->error;
 	}
+	
 }
 ?>

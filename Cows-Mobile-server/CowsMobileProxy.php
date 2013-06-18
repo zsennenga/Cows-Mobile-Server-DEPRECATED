@@ -4,7 +4,7 @@
  * 
  * Proxy used as a go-between for the mobile app and COWS.
  * 
- * Takes ticket (as a CAS ticket ID) and a whole smattering of event 
+ * Takes ticket (as a CAS TGT ID) and a whole smattering of event 
  * configuration information as inputs.
  * 
  */
