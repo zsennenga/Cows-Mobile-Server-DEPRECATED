@@ -19,8 +19,8 @@ class Event	{
 	 * 
 	 * @return CAS ticket as a GET parameter
 	 */
-	public function getTicketString()	{
-		return "ticket=" . $this->ticketID;
+	public function getTicket()	{
+		return $this->ticketID;
 	}
 	
 	/**
@@ -30,8 +30,8 @@ class Event	{
 	 * @return Event Configuration information as a set of POST parameters.
 	 */
 	public function getEventString()	{
-		$retString = $this->getArray;
-		$retString .= "&SiteId=" . $this->siteId;
+		$retString = http_build_query($this->getArray);
+		$retString .= "&SiteId=" . urlencode($this->siteId);
 		
 		return $retString;
 	}
@@ -53,8 +53,8 @@ class Event	{
 			$noErrors = false;
 		}
 		else	{
-			$this->ticketID = $getArray['ticket'];
-			unset($getArray['ticket']);
+			$this->ticketID = $this->getArray['ticket'];
+			unset($this->getArray['ticket']);
 			//TODO: Verify ticket.
 		}
 		
@@ -70,6 +70,15 @@ class Event	{
 	 */
 	public function getErrors()	{
 		return $this->errors;
+	}
+	
+	/**
+	 * Getter for $this->siteId
+	 *
+	 * @return the siteid
+	 */
+	public function getSiteId()	{
+		return $this->siteId;
 	}
 }
 ?>
