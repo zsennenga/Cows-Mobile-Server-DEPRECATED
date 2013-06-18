@@ -19,8 +19,6 @@ class CurlWrapper	{
 	
 	/**
 	 *
-	 * genFilename
-	 *
 	 * Generates a random filename for the cookie file for cURL
 	 *
 	 * @return cookieFile name
@@ -35,8 +33,6 @@ class CurlWrapper	{
 	}
 	
 	/**
-	 * 
-	 * CurlWrapper
 	 * 
 	 * Constructor. Sets up curl handle, basic options, and a few other variables.
 	 * 
@@ -56,8 +52,6 @@ class CurlWrapper	{
 	}
 	
 	/**
-	 *
-	 * performEventRegistration
 	 *
 	 * Performes the entire request, from login, to logout. 
 	 *
@@ -113,7 +107,6 @@ class CurlWrapper	{
 	}
 	
 	/**
-	 * executeCurlRequest
 	 * 
 	 * Executes a generic curl request, sets error value if necessary.
 	 * 
@@ -170,8 +163,6 @@ class CurlWrapper	{
 	
 	/**
 	 * 
-	 * errorScrape
-	 * 
 	 * Scrapes a given body of html text for errors from COWS
 	 * 
 	 * @param $htmlOutput
@@ -203,8 +194,6 @@ class CurlWrapper	{
 	}
 	
 	/**
-	 * 
-	 * getRequestToken
 	 * 
 	 * @return String containing POST paramter containing the correct __RequestVerificationToken
 	 * from COWS, or the string "ERROR" if there is an error.
@@ -240,8 +229,6 @@ class CurlWrapper	{
 	
 	/**
 	 * 
-	 * destroySession
-	 * 
 	 * Closes the class instances' curl handle, and unlinks the cookie jar.
 	 * 
 	 */
@@ -256,8 +243,6 @@ class CurlWrapper	{
 	}
 	
 	/**
-	 * 
-	 * getError
 	 * 
 	 * Getter for $this->error
 	 * 

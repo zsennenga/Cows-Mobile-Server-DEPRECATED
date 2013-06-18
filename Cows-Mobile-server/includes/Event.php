@@ -15,7 +15,7 @@ class Event	{
 	
 	/**
 	 * 
-	 * getTicketString
+	 * Getter for the CAS ticket id
 	 * 
 	 * @return CAS ticket as a GET parameter
 	 */
@@ -25,7 +25,7 @@ class Event	{
 	
 	/**
 	 * 
-	 * getEventString
+	 * Getter for the event string
 	 * 
 	 * @return Event Configuration information as a set of POST parameters.
 	 */
@@ -37,8 +37,6 @@ class Event	{
 	}
 	
 	/**
-	 * 
-	 * checkParameters
 	 * 
 	 * Checks parameters for correctness and seperates out necessary ones.
 	 * 
@@ -55,7 +53,6 @@ class Event	{
 		else	{
 			$this->ticketID = $this->getArray['ticket'];
 			unset($this->getArray['ticket']);
-			//TODO: Verify ticket.
 		}
 		
 		$this->getString = http_build_query($this->getArray);
@@ -64,6 +61,7 @@ class Event	{
 	}
 	
 	/**
+	 * 
 	 * Getter for $this->errors
 	 * 
 	 * @return Error string
@@ -73,6 +71,7 @@ class Event	{
 	}
 	
 	/**
+	 * 
 	 * Getter for $this->siteId
 	 *
 	 * @return the siteid

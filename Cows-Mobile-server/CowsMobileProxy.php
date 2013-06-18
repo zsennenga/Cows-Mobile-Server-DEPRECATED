@@ -13,7 +13,6 @@ require_once 'includes/CurlWrapper.php';
 require_once 'includes/Event.php';
 
 /**
- * checkError
  *
  * Quick wrapper to handle the construction of
  * error messages if an error condition is met.
