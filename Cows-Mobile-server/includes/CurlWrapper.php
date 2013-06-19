@@ -38,7 +38,7 @@ class CurlWrapper	{
 	 * 
 	 * @param String $baseUrl
 	 */
-	function CurlWrapper($baseUrl)	{
+	function __construct($baseUrl)	{
 		$this->baseUrl = $baseUrl;
 		$this->curlHandle = curl_init();
 		$this->cookieFile = $this->genFilename();
@@ -49,6 +49,14 @@ class CurlWrapper	{
 		curl_setopt($this->curlHandle, CURLOPT_COOKIEFILE, $this->cookieFile);
 		curl_setopt($this->curlHandle, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($this->curlHandle, CURLOPT_SSL_VERIFYPEER, false);
+	}
+	
+	/**
+	 * Destructor. Really just a catch-all to make sure we close the curl handle
+	 * and perform all other cleanup logic
+	 */
+	function __destruct()	{
+		$this->destroySession();
 	}
 	
 	/**
