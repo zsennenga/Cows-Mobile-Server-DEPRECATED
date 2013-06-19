@@ -4,7 +4,7 @@
  * 
  * Used to execute Curl Queries in a more ordered/abstracted way.
  * 
- * @author its-zach
+ * @author Zachary Ennenga
  *
  */
 class CurlWrapper	{
@@ -12,12 +12,6 @@ class CurlWrapper	{
 	private $curlHandle;
 	private $error;
 	private $cookieFile;
-	
-	const LOGIN_PATH = "Account/LogOn";
-	const EVENT_PATH = "Event/Create";
-	const LOGOUT_PATH = "Account/LogOff";
-	const CAS_PROXY_PATH = "https://cas.ucdavis.edu:8443/cas/proxy";
-	const COWS_BASE_PATH = "http://cows.ucdavis.edu/";
 	
 	/**
 	 *
@@ -41,7 +35,7 @@ class CurlWrapper	{
 	 * @param String $baseUrl
 	 */
 	function __construct($siteId)	{
-		$this->baseUrl = CurlWrapper::COWS_BASE_PATH . $siteId . "/";
+		$this->baseUrl = COWS_BASE_PATH . $siteId . "/";
 		$this->curlHandle = curl_init();
 		$this->cookieFile = $this->genFilename();
 		$this->error = "";
@@ -77,9 +71,9 @@ class CurlWrapper	{
 		}
 
 		//Generate URLs used to perform curl requests. Namely: Login, register event, and logout.
-		$login = $this->baseUrl . CurlWrapper::LOGIN_PATH . "?" . "returnUrl=" . $this->baseUrl . '&ticket=' . trim($out);
-		$execute = $this->baseUrl . CurlWrapper::EVENT_PATH;
-		$logout = $this->baseUrl . CurlWrapper::LOGOUT_PATH;
+		$login = $this->baseUrl . LOGIN_PATH . "?" . "returnUrl=" . $this->baseUrl . '&ticket=' . trim($out);
+		$execute = $this->baseUrl . EVENT_PATH;
+		$logout = $this->baseUrl . LOGOUT_PATH;
 		
 		if(!$this->executeCurlRequest($login))	{
 				$this->destroySession();
@@ -145,7 +139,7 @@ class CurlWrapper	{
 	 * @return String $serviceTicket
 	 */
 	private function proxyToServiceTicket($proxyTicket)	{
-		$url =  CurlWrapper::CAS_PROXY_PATH . "?" .
+		$url =  CAS_PROXY_PATH . "?" .
 				"service=" . $this->baseUrl . Curl_Wrapper::LOGIN_PATH . "?returnUrl=" . $this->baseUrl .
 				"&pgt=" . $proxyTicket;
 		curl_setopt($this->curlHandle, CURLOPT_URL, $url);
@@ -212,7 +206,7 @@ class CurlWrapper	{
 	 */
 	private function getRequestToken()	{
 		//Get event creation page
-		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl . CurlWrapper::EVENT_PATH);
+		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl . EVENT_PATH);
 		
 		$out = curl_exec($this->curlHandle);
 		
@@ -246,7 +240,7 @@ class CurlWrapper	{
 	public function destroySession()	{
 		//Attempt to logout
 		curl_setopt($this->curlHandle, CURLOPT_HTTPGET, true);
-		curl_exec($this->curlHandle,$this->baseUrl . CurlWrapper::LOGOUT_PATH);
+		curl_exec($this->curlHandle,$this->baseUrl . LOGOUT_PATH);
 		//Close cURL handle
 		curl_close($this->curlHandle);
 		//Destroy cookie file

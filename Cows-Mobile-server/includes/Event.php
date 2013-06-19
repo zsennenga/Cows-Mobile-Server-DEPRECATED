@@ -1,4 +1,12 @@
 <?php
+/**
+ * Event
+ * 
+ * Used to store and validate event information
+ * 
+ * @author Zachary Ennenga
+ *
+ */
 class Event	{
 	private $errors;
 	private $ticketID;
