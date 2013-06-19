@@ -75,7 +75,7 @@ class Event	{
 	 * @return Error string
 	 */
 	public function getErrors()	{
-		return $this->errors;
+		return ERROR_EVENT  . ":" .  $this->errors;
 	}
 	
 	/**

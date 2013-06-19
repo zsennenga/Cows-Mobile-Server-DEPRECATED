@@ -122,7 +122,7 @@ class CurlWrapper	{
 		$out = curl_exec($this->curlHandle);
 		
 		if ($out === FALSE) {
-			$this->error = curl_error($this->curlHandle);
+			$this->error = ERROR_CURL . ":" . curl_error($this->curlHandle);
 			return false;
 		}
 		
@@ -145,7 +145,7 @@ class CurlWrapper	{
 		$out = curl_exec($this->curlHandle);
 		
 		if ($out === FALSE) {
-			$this->error = curl_error($this->curlHandle);
+			$this->error = ERROR_CURL . ":" . curl_error($this->curlHandle);
 			return false;
 		}
 		
@@ -159,7 +159,7 @@ class CurlWrapper	{
 			return $out;
 		}	
 		else	{
-			$this->error = "Invalid Proxy Ticket. Please Reauthenticate to CAS.";
+			$this->error = ERROR_CAS  . ":" . "Invalid Proxy Ticket. Please Reauthenticate to CAS.";
 			return false;
 		}
 		
@@ -183,14 +183,14 @@ class CurlWrapper	{
 		if ($div->length > 0)	{
 			$div = $div->item(0);
 			$error = str_replace('may not be null or empty', '', $div->nodeValue);
-			$this->error = "COWS Error: " . strip_tags(htmlspecialchars_decode($error));
+			$this->error = ERROR_EVENT  . ":" . "COWS Error: " . strip_tags(htmlspecialchars_decode($error));
 			return false;
 		}
 		
 		//Cows likes to throw generic errors sometimes for no reason
 		//Well okay there is usually a reason
 		if (strstr($htmlOutput,"Error") !== false)	{
-			$this->error = "COWS Error: Unknown Problem occurred.";
+			$this->error = ERROR_EVENT . ":" . "COWS Error: Unknown Problem occurred.";
 			return false;
 		}
 		
@@ -210,7 +210,7 @@ class CurlWrapper	{
 		$out = curl_exec($this->curlHandle);
 		
 		if ($out === FALSE) {
-			$this->error = curl_error($this->curlHandle);
+			$this->error = ERROR_CURL . ":" . curl_error($this->curlHandle);
 			return "ERROR";
 		}
 		
@@ -221,7 +221,7 @@ class CurlWrapper	{
 		
 		$nodes = $xp->query('//input[@name="__RequestVerificationToken"]');
 		if ($nodes->length == 0)	{
-			$this->error = "Unable to obtain __RequestVerificationToken";
+			$this->error = ERROR_CAS . ":" .  "Unable to obtain __RequestVerificationToken";
 			return "ERROR";
 		}
 		$node = $nodes->item(0);
