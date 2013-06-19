@@ -16,6 +16,7 @@ class CurlWrapper	{
 	const LOGIN_PATH = "Account/LogOn";
 	const EVENT_PATH = "Event/Create";
 	const LOGOUT_PATH = "Account/LogOff";
+	const CAS_PROXY_PATH = "https://cas.ucdavis.edu:8443/cas/proxy";
 	
 	/**
 	 *
@@ -143,8 +144,9 @@ class CurlWrapper	{
 	 * @return String $serviceTicket
 	 */
 	private function proxyToServiceTicket($proxyTicket)	{
-		$url = "https://cas.ucdavis.edu:8443/cas/proxy?service=http%3a%2f%2fcows.ucdavis.edu%2fits%2fAccount%2fLogOn%3freturnUrl%3dhttp%3a%2f%2fcows.ucdavis.edu%2fits%2f
-				&pgt=" . $proxyTicket;
+		$url =  CurlWrapper::CAS_PROXY_PATH . "?" .
+				"service=" . $this->baseUrl . Curl_Wrapper::LOGIN_PATH . "?returnUrl=" . $this->baseUrl .
+				"&pgt=" . $proxyTicket;
 		curl_setopt($this->curlHandle, CURLOPT_URL, $url);
 		$out = curl_exec($this->curlHandle);
 		
