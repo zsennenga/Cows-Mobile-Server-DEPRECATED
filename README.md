@@ -1,8 +1,11 @@
 Cows-Mobile-Server
 ==================
 
-Server app to negotiate requests between the Cows web scheduler and moobile client app. 
+COWS is the COmmunity Web Scheduler used by several UC Davis departments under the College of Engineering Umbrella. 
+It interacts with the UC Davis CAS system
 
-Essentially just an abstraction layer to deal with any future changes to Cows implementations without 
+Cows-Mobile-Server is a php app used negotiate requests between the Cows web scheduler and moobile client app. 
+
+Essentially this is just an abstraction layer to deal with any future changes to Cows implementations without 
 breaking the client app.
 
