@@ -15,12 +15,12 @@ require_once 'includes/Event.php';
 /**
  * Defines
  */
-define(LOGIN_PATH,"Account/LogOn");
-define(EVENT_PATH,"Event/Create");
-define(LOGOUT_PATH,"Account/LogOff");
-define(CAS_PROXY_PATH,"https://cas.ucdavis.edu:8443/cas/proxy");
-define(COWS_BASE_PATH,"http://cows.ucdavis.edu/");
-define(SITE_ID, "its");
+define("LOGIN_PATH","Account/LogOn");
+define("EVENT_PATH","Event/Create");
+define("LOGOUT_PATH","Account/LogOff");
+define("CAS_PROXY_PATH","https://cas.ucdavis.edu:8443/cas/proxy");
+define("COWS_BASE_PATH","http://cows.ucdavis.edu/");
+define("SITE_ID", "its");
 
 /**
  *
