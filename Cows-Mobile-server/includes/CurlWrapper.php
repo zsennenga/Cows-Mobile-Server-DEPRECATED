@@ -17,6 +17,7 @@ class CurlWrapper	{
 	const EVENT_PATH = "Event/Create";
 	const LOGOUT_PATH = "Account/LogOff";
 	const CAS_PROXY_PATH = "https://cas.ucdavis.edu:8443/cas/proxy";
+	const COWS_BASE_PATH = "http://cows.ucdavis.edu/";
 	
 	/**
 	 *
@@ -39,8 +40,8 @@ class CurlWrapper	{
 	 * 
 	 * @param String $baseUrl
 	 */
-	function __construct($baseUrl)	{
-		$this->baseUrl = $baseUrl;
+	function __construct($siteId)	{
+		$this->baseUrl = CurlWrapper::COWS_BASE_PATH . $siteId . "/";
 		$this->curlHandle = curl_init();
 		$this->cookieFile = $this->genFilename();
 		$this->error = "";

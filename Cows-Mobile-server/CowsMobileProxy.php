@@ -32,7 +32,7 @@ $event = new Event($_GET,"its");
 
 checkError($event->constructParameters(),$event->getErrors());
 
-$curlWrapper = new CurlWrapper("http://cows.ucdavis.edu/its/");
+$curlWrapper = new CurlWrapper("its");
 
 //Login, do the event request, and Logout. If any errors happen along the way, stop and send a message to the user.
 checkError($curlWrapper->performEventRegistration($event), 	$curlWrapper->getError());
