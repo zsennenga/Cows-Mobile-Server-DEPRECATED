@@ -7,7 +7,7 @@ class Event	{
 	private $getArray;
 	private $siteId;
 	
-	function Event($getArray,$siteid)	{
+	function __construct($getArray,$siteid)	{
 		$this->siteId = $siteid;
 		$this->getArray = $getArray;
 		$this->errors = "";
