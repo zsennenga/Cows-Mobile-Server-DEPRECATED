@@ -52,7 +52,6 @@ class CurlWrapper	{
 	 * and perform all other cleanup logic
 	 */
 	function __destruct()	{
-		$this->destroySession();
 	}
 	
 	/**
@@ -140,7 +139,7 @@ class CurlWrapper	{
 	 */
 	private function proxyToServiceTicket($proxyTicket)	{
 		$url =  CAS_PROXY_PATH . "?" .
-				"service=" . $this->baseUrl . Curl_Wrapper::LOGIN_PATH . "?returnUrl=" . $this->baseUrl .
+				"service=" . $this->baseUrl . LOGIN_PATH . "?returnUrl=" . $this->baseUrl .
 				"&pgt=" . $proxyTicket;
 		curl_setopt($this->curlHandle, CURLOPT_URL, $url);
 		$out = curl_exec($this->curlHandle);
@@ -240,7 +239,8 @@ class CurlWrapper	{
 	public function destroySession()	{
 		//Attempt to logout
 		curl_setopt($this->curlHandle, CURLOPT_HTTPGET, true);
-		curl_exec($this->curlHandle,$this->baseUrl . LOGOUT_PATH);
+		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl . LOGOUT_PATH);
+		curl_exec($this->curlHandle);
 		//Close cURL handle
 		curl_close($this->curlHandle);
 		//Destroy cookie file

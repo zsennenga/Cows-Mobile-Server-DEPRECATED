@@ -36,7 +36,7 @@ function checkError($bool, $errorMessage)	{
 		exit(0);
 	}
 }
-
+$_GET['ticket'] = "TGT-694334-sremXr3fdn6MDYOG1gAjaFpbEacIO6QgucOXSDnUOx3rhUS1yf-58";
 //Create an event object and use it to verify all our ducks are in a row regarding the request parameters.
 $event = new Event($_GET,SITE_ID);
 
