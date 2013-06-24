@@ -80,7 +80,7 @@ class CurlWrapper	{
 		}
 		
 		//get __RequestVerificationToken from the event creation form
-		$token = $this->getRequestToken();
+		$token = $this->scrapInformation();
 		if ($token == "ERROR")	{
 			$this->destroySession();
 			return false;
@@ -199,11 +199,11 @@ class CurlWrapper	{
 	
 	/**
 	 * 
-	 * @return String containing POST paramter containing the correct __RequestVerificationToken
-	 * from COWS, or the string "ERROR" if there is an error.
+	 * @return String containing POST paramters that need to be scraped from /Event/Create, 
+	 * or the string "ERROR" if there is an error.
 	 * 
 	 */
-	private function getRequestToken()	{
+	private function scrapeInformation()	{
 		//Get event creation page
 		curl_setopt($this->curlHandle, CURLOPT_URL, $this->baseUrl . EVENT_PATH);
 		
@@ -215,22 +215,29 @@ class CurlWrapper	{
 		}
 		
 		//Grab token
+		$retString = getField("__RequestVerificationToken",$out);
+		$retString .= getField("ContactName",$out);
+		$retString .= getField("ContactEmail",$out);
+		$retString .= getField("EventStatusName",$out);
+				
+		return $retString;
+	}
+	
+	private function getField($field,$response)	{
 		$doc = new DOMDocument();
-		$doc->loadHTML($out);
+		$doc->loadHTML($response);
 		$xp = new DOMXPath($doc);
 		
-		$nodes = $xp->query('//input[@name="__RequestVerificationToken"]');
+		$nodes = $xp->query('//input[@name="'.$field.'"]');
 		if ($nodes->length == 0)	{
-			$this->error = ERROR_CAS . ":" .  "Unable to obtain __RequestVerificationToken";
+			$this->error = ERROR_CAS . ":" .  "Unable to obtain ". $field;
 			return "ERROR";
 		}
 		$node = $nodes->item(0);
 		
 		$val = $node->getAttribute('value');
-				
-		return "__RequestVerificationToken=" . urlencode($val) . '&';
+		return $field . '=' . urlencode($val) . '&';
 	}
-	
 	/**
 	 * 
 	 * Closes the class instances' curl handle, and unlinks the cookie jar.
