@@ -62,9 +62,17 @@ class Event	{
 			$this->ticketID = $this->getArray['ticket'];
 			unset($this->getArray['ticket']);
 		}
-		
+		$cat = $this->getArray['Categories'];
+		$loc = $this->getArray['Locations'];
+		if (strlen($cat) > 0) $cat = split("&",$cat);
+		if (strlen($loc) > 0) $loc = split("&",$loc);
 		$this->getString = http_build_query($this->getArray);
-		
+		foreach($cat as $str)	{
+			$this->getString .= "&Categories=" . urlencode($str);
+		}
+		foreach($loc as $str)	{
+			$this->getString .= "&Locations=" . urlencode($str);
+		}
 		return $noErrors;
 	}
 	
