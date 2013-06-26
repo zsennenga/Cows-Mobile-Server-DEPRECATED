@@ -215,10 +215,10 @@ class CurlWrapper	{
 		}
 		
 		//Grab token
-		$retString = getField("__RequestVerificationToken",$out);
-		$retString .= getField("ContactName",$out);
-		$retString .= getField("ContactEmail",$out);
-		$retString .= getField("EventStatusName",$out);
+		$retString = $this->getField("__RequestVerificationToken",$out);
+		$retString .= $this->getField("ContactName",$out);
+		$retString .= $this->getField("ContactEmail",$out);
+		$retString .= $this->getField("EventStatusName",$out);
 				
 		return $retString;
 	}
