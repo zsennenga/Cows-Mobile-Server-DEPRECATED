@@ -40,12 +40,12 @@ function checkError($bool, $errorMessage)	{
 	}
 }
 
-if (!isset($_GET['siteid']))	{
+if (!isset($_GET['SiteId']))	{
 	exit(0);
 }
 else	{
-	define("SITE_ID",$_GET['siteid']);
-	unset($_GET['siteid']);
+	define("SITE_ID",$_GET['SiteId']);
+	unset($_GET['SiteId']);
 }
 //Create an event object and use it to verify all our ducks are in a row regarding the request parameters.
 $event = new Event($_GET,SITE_ID);
