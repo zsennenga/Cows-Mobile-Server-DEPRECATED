@@ -80,7 +80,7 @@ class CurlWrapper	{
 		}
 		
 		//get __RequestVerificationToken from the event creation form
-		$token = $this->scrapInformation();
+		$token = $this->scrapeInformation();
 		if ($token == "ERROR")	{
 			$this->destroySession();
 			return false;
