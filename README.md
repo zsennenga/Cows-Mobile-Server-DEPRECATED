@@ -1,3 +1,7 @@
+#DEPRECATED
+
+This project is DEPRECATED and as such will no longer be updated. All functionality has been rolled into COWS-RESTful-API.
+
 Cows-Mobile-Server
 ==================
 
